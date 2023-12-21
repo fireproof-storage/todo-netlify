@@ -76,7 +76,7 @@
 
       let compactor = '🚗'
       function drawInfo() {
-        document.querySelector('#carLog').innerText = ` ⏰ ${db._crdt.clock.head.length} ${compactor} ${cx.loader.carLog.length} 📩 ${cx.taskManager.queue.length}`
+        document.querySelector('#carLog').innerText = ` ⏰ ${db._crdt.clock.head.length} ${compactor} ${cx.loader.carLog.length}`
       }
       const doRedraw = async () => {
         drawInfo()
