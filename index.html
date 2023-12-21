@@ -97,9 +97,11 @@
             }
             const textSpan = document.createElement('span')
             textSpan.innerText = `${doc.actor}:${doc.clicks || 0}`
+            textSpan.style.fontFamily = "monospace"
             const taskSpan = document.createElement('span')
             taskSpan.innerText = doc.task
-            textSpan.style.fontFamily = "monospace"
+            taskSpan.style.display = "block"
+            taskSpan.style.padding = "5px"
             const li = document.createElement('li')
             li.appendChild(checkbox)
             li.appendChild(textSpan)
