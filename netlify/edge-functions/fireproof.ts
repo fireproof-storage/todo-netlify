@@ -37,7 +37,9 @@ export default async (req: Request) => {
       const entries = (
         await Promise.all(
           blobs.map(async blob => {
-            const { data, parents } = await meta.get(blob.key, { type: 'json' })
+            const got = await meta.get(blob.key, { type: 'json' }).catch(() => null)
+            if (!got) return { cid: blob.key.split('/')[1], data: null }
+            const { data, parents } = got
             for (const p of parents) {
               allParents.push(p.toString())
               void meta.delete(`${metaDb}/${p}`)
