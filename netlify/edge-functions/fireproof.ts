@@ -21,22 +21,31 @@ export default async (req: Request) => {
       return new Response(carArrayBuffer, { status: 200 })
     }
   } else if (metaDb) {
+    // problem: deletes are faster than write availability, so we can end up with mostly an empty list
+    // solution: don't delete until read, eg use the parents list at read time to mask and delete outdated entries
     const meta = getStore('meta')
     if (req.method === 'PUT') {
       const { data, cid, parents } = (await req.json()) as CRDTEntry
-      await meta.set(`${metaDb}/${cid}`, data)
-      for (const p of parents) {
-        void meta.delete(`${metaDb}/${p}`)
-      }
+      await meta.setJSON(`${metaDb}/${cid}`, { data, parents })
+      // for (const p of parents) {
+      //   void meta.delete(`${metaDb}/${p}`)
+      // }
       return new Response(JSON.stringify({ ok: true }), { status: 201 })
     } else if (req.method === 'GET') {
       const { blobs } = await meta.list({ prefix: `${metaDb}/` })
-      const entries = (await Promise.all(
-        blobs.map(async (blob) => {
-          const data = await meta.get(blob.key)
-          return { cid: blob.key.split('/')[1], data }
-        })
-      )).filter((entry) => entry.data !== null)
+      const allParents = [] as string[]
+      const entries = (
+        await Promise.all(
+          blobs.map(async blob => {
+            const { data, parents } = await meta.get(blob.key, { type: 'json' })
+            for (const p of parents) {
+              allParents.push(p.toString())
+              void meta.delete(`${metaDb}/${p}`)
+            }
+            return { cid: blob.key.split('/')[1], data }
+          })
+        )
+      ).filter(entry => (entry.data !== null && !allParents.includes(entry.cid)))
       return new Response(JSON.stringify(entries), { status: 200 })
     }
   } else {
