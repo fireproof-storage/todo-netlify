@@ -97,11 +97,11 @@
             }
             const textSpan = document.createElement('span')
             textSpan.innerText = `${doc.actor}:${doc.clicks || 0}`
-            textSpan.style.fontFamily = "monospace"
+            textSpan.style.fontFamily = 'monospace'
             const taskSpan = document.createElement('span')
             taskSpan.innerText = doc.task
-            taskSpan.style.display = "block"
-            taskSpan.style.padding = "5px"
+            taskSpan.style.display = 'block'
+            taskSpan.style.padding = '5px'
             const li = document.createElement('li')
             li.appendChild(checkbox)
             li.appendChild(textSpan)
@@ -171,7 +171,7 @@
             startPoller(e)
           }
         }
-        window.togglePolling = togglePolling;
+        window.togglePolling = togglePolling
 
         let worker
         async function startWorker() {
@@ -232,12 +232,20 @@
   <body>
     <h1>Fireproof Todos</h1>
     List:
-    <input title="Change list" type="text" name="list" id="list" />
+    <input
+      title="Change list"
+      type="text"
+      name="list"
+      id="list"
+      onkeydown="if (event.keyCode == 13) changeList(event)"
+    />
     <button onclick="changeList(event)">Change List</button>
 
     <p>
       Fireproof stores data locally and encrypts it before sending it to the cloud. This demo uses
-      Netlify Edge Functions, but you can easily run Fireproof on S3 or another provider. You also accelerate sync times by using a real-time adapter like PartyKit or WebRTC, this demo polls the server every 3 seconds.
+      Netlify Edge Functions, but you can easily run Fireproof on S3 or another provider. You also
+      accelerate sync times by using a real-time adapter like PartyKit or WebRTC, this demo polls
+      the server every 3 seconds.
       <a href="https://use-fireproof.com/">Learn more in the Fireproof developer docs.</a>
     </p>
 
@@ -249,7 +257,13 @@
     <span id="cxInfo"></span>
 
     <h3>Todos</h3>
-    <input title="Create a todo" type="text" name="todo" id="todo" />
+    <input
+      title="Create a todo"
+      type="text"
+      name="todo"
+      id="todo"
+      onkeydown="if (event.keyCode == 13) createTodoClick(event)"
+    />
     <button onclick="createTodoClick(event)">Create Todo</button>
     <ul></ul>
   </body>
