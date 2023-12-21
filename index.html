@@ -96,10 +96,14 @@
               await db.put(doc)
             }
             const textSpan = document.createElement('span')
-            textSpan.innerText = `${doc.actor}:${doc.clicks || 0} ${doc.task}`
+            textSpan.innerText = `${doc.actor}:${doc.clicks || 0}`
+            const taskSpan = document.createElement('span')
+            taskSpan.innerText = doc.task
+            textSpan.style.fontFamily = "monospace"
             const li = document.createElement('li')
             li.appendChild(checkbox)
             li.appendChild(textSpan)
+            li.appendChild(taskSpan)
             document.querySelector('ul').appendChild(li)
           }
         }
