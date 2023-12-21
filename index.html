@@ -143,6 +143,29 @@
         }
         window.createTodoClick = createTodoClick
 
+        // togglePolling
+        let poller
+        async function startPoller() {
+          const button = document.querySelector('#polling')
+          button.innerText = '🔄'
+          poller = setInterval(async () => {
+            await cx.refresh()
+          }, 3000)
+        }
+        const stopPoller = () => {
+          const button = document.querySelector('#polling')
+          button.innerText = '⏯️'
+          clearInterval(poller)
+        }
+        const togglePolling = e => {
+          e.preventDefault()
+          if (poller) {
+            stopPoller()
+          } else {
+            startPoller(e)
+          }
+        }
+
         let worker
         async function startWorker() {
           const button = document.querySelector('#robot')
@@ -211,8 +234,9 @@
       <a href="https://use-fireproof.com/">Learn more in the Fireproof developer docs.</a>
     </p>
 
-    <button onclick="openDashboard(event)">🔥 Import to Dashboard</button>
+    <button onclick="openDashboard(event)">🔥</button>
     <button id="robot" onclick="toggleWorker(event)">🤖</button>
+    <button id="polling" onclick="togglePolling(event)">🪩</button>
     <br />
     <span id="carLog" onclick="doCompact(event)"></span>
     <br />
