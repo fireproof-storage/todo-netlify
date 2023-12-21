@@ -31,12 +31,12 @@ export default async (req: Request) => {
       return new Response(JSON.stringify({ ok: true }), { status: 201 })
     } else if (req.method === 'GET') {
       const { blobs } = await meta.list({ prefix: `${metaDb}/` })
-      const entries = await Promise.all(
+      const entries = (await Promise.all(
         blobs.map(async (blob) => {
           const data = await meta.get(blob.key)
           return { cid: blob.key.split('/')[1], data }
         })
-      )
+      )).filter((entry) => entry.data !== null)
       return new Response(JSON.stringify(entries), { status: 200 })
     }
   } else {
