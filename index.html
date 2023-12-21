@@ -237,11 +237,10 @@
 
     <p>
       Fireproof stores data locally and encrypts it before sending it to the cloud. This demo uses
-      Netlify Edge Functions, but you can easily run Fireproof on S3 or another provider.
+      Netlify Edge Functions, but you can easily run Fireproof on S3 or another provider. You also accelerate sync times by using a real-time adapter like PartyKit or WebRTC, this demo polls the server every 3 seconds.
       <a href="https://use-fireproof.com/">Learn more in the Fireproof developer docs.</a>
     </p>
 
-    <button onclick="openDashboard(event)">🔥</button>
     <button id="robot" onclick="toggleWorker(event)">🤖</button>
     <button id="polling" onclick="togglePolling(event)">🪩</button>
     <br />
